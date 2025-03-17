@@ -1,4 +1,4 @@
-Package: binancer_RSA
+Package: binancer
 Type: Package
 Title: API Client to 'Binance'
 Version: 1.2.0
