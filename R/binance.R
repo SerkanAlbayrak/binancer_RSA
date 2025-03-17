@@ -554,6 +554,7 @@ binance_ticker_24hr_multi <- function(symbols) {
     } else {
         prices <- binance_query(endpoint = 'api/v1/ticker/24hr')
         prices <- rbindlist(prices)
+        }
 }
 
 #' Get current average price for a symbol
