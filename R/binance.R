@@ -536,7 +536,7 @@ binance_ticker_24hr <- function(symbol) {
 
 #' 24 hour rolling window price change statistics for multiple tickers
 #' @param symbol optional string
-#' @return \code{data.table}
+#' @return \code{list}
 #' @export
 #' @importFrom data.table rbindlist
 #' @importFrom snakecase to_snake_case
@@ -548,24 +548,12 @@ binance_ticker_24hr_multi <- function(symbols) {
 
     if (!missing(symbols)) {
         params <- list(symbols = symbols)
-        prices <- binance_query(endpoint = 'api/v1/ticker/24hr', params = params)
+        res <- binance_query(endpoint = 'api/v1/ticker/24hr', params = params)
+        res <- fromJSON(res)
         prices <- as.data.table(prices)
     } else {
         prices <- binance_query(endpoint = 'api/v1/ticker/24hr')
         prices <- rbindlist(prices)
-    }
-
-    for (v in setdiff(names(prices), c('symbol', 'openTime', 'closeTime', 'firstId', 'lastId', 'count'))) {
-        prices[, (v) := as.numeric(get(v))]
-    }
-
-    for (v in c('openTime', 'closeTime')) {
-        prices[, (v) := as.POSIXct(get(v)/1e3, origin = '1970-01-01')]
-    }
-
-    # return with snake_case column names
-    setnames(prices, to_snake_case(names(prices)))
-    prices
 }
 
 #' Get current average price for a symbol
