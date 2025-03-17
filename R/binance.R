@@ -545,16 +545,10 @@ binance_ticker_24hr <- function(symbol) {
 #' binance_ticker_24hr_multi() # all symbols - binance.weight 40
 #' }
 binance_ticker_24hr_multi <- function(symbols) {
-
-    if (!missing(symbols)) {
-        params <- list(symbols = symbols)
-        res <- binance_query(endpoint = 'api/v1/ticker/24hr', params = params)
-        res <- fromJSON(res)
-        prices <- as.data.table(prices)
-    } else {
-        prices <- binance_query(endpoint = 'api/v1/ticker/24hr')
-        prices <- rbindlist(prices)
-        }
+    params <- list(symbols = symbols)
+    res <- binance_query(endpoint = 'api/v1/ticker/24hr', params = params)
+    res <- fromJSON(res)
+    res
 }
 
 #' Get current average price for a symbol
